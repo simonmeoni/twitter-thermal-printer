@@ -8,9 +8,10 @@ function parseJson(path){
   return path
 }
 
-function streamTweet(path){
-  const stream = client.stream('statuses/filter', {follow:'394746333,89005816,1912617043,831889083446222849'});
-stream.on('data', function(tweet) {
+function streamTweet(json){
+
+  const stream = client.stream('statuses/filter', { follow: json["follow"]});
+  stream.on('data', function(tweet) {
   writeOnLp(tweet.user.name,tweet.text);
 });
 
