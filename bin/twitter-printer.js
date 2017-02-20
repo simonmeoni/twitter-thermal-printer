@@ -1,19 +1,22 @@
 const Twitter = require('twitter');
 const Exec = require('child_process').exec;
-const params = {follow:'394746333,89005816,1912617043,831889083446222849'};
 const burnito = require('./secret/burnito');
-
 const client = new Twitter(burnito);
-const stream = client.stream('statuses/filter', params);
 
-function streamTweet(){
-  stream.on('data', function(tweet) {
-    writeOnLp(tweet.user.name,tweet.text);
-  });
 
-  stream.on('error', function(error) {
-    throw error;
-  });
+function parseJson(path){
+  return path
+}
+
+function streamTweet(path){
+  const stream = client.stream('statuses/filter', {follow:'394746333,89005816,1912617043,831889083446222849'});
+stream.on('data', function(tweet) {
+  writeOnLp(tweet.user.name,tweet.text);
+});
+
+stream.on('error', function(error) {
+  throw error;
+});
 }
 
 function writeOnLp(tweetUser,tweetText){
