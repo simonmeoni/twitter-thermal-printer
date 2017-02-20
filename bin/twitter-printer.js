@@ -4,16 +4,17 @@ const params = {follow:'394746333,89005816,1912617043,831889083446222849'};
 const burnito = require('./secret/burnito');
 
 const client = new Twitter(burnito);
-
 const stream = client.stream('statuses/filter', params);
 
-stream.on('data', function(tweet) {
-  writeOnLp(tweet.user.name,tweet.text);
-});
+function streamTweet(){
+  stream.on('data', function(tweet) {
+    writeOnLp(tweet.user.name,tweet.text);
+  });
 
-stream.on('error', function(error) {
-  throw error;
-});
+  stream.on('error', function(error) {
+    throw error;
+  });
+}
 
 function writeOnLp(tweetUser,tweetText){
   hyphen = "\n" + "-".repeat(34) + "\n"
@@ -27,3 +28,5 @@ function writeOnLp(tweetUser,tweetText){
     console.log(stdout);
   });
 }
+
+exports.streamTweet = streamTweet;
