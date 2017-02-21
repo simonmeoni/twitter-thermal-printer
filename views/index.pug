@@ -2,4 +2,8 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  form
+    input(id="burnitofield" type="text" placeholder="enter a twitter user ..." name="user")
+    button(id="follow")="follow"
+    button(id="unfollow")="unfollow"
+  button= "reset followed users"

@@ -9,7 +9,6 @@ function parseJson(path){
 }
 
 function streamTweet(json){
-
   const stream = client.stream('statuses/filter', { follow: json["follow"]});
   stream.on('data', function(tweet) {
   writeOnLp(tweet.user.name,tweet.text);
