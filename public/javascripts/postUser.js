@@ -3,7 +3,8 @@
   var unfollow = document.getElementById('unfollow');
   var input = document.getElementById('field');
 
-  follow.addEventListener('click',function (){
+  follow.addEventListener('click',function (event){
+    event.preventDefault();
     if (input.value.length === 0) {
       return;
     }
@@ -18,7 +19,8 @@
     });
   });
 
-  unfollow.addEventListener('click',function (){
+  unfollow.addEventListener('click',function (event){
+    event.preventDefault();
     if (input.value.length === 0) {
       return;
     }

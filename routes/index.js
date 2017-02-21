@@ -1,3 +1,4 @@
+var emitter = require('../bin/emitter');
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
@@ -14,13 +15,8 @@ router.post('/follow', function(req, res, next) {
   if(!users.includes(user)){
     users.splice(0,0,user);
     json.follow = users.join(",");
-    console.log(JSON.stringify(json));
-    fs.writeFile("./public/json/followingUsers.json", JSON.stringify(json),
-    function(err) {
-      if(err) {
-        return console.log(err);
-      }
-    });
+    fs.writeFile("./public/json/followingUsers.json", JSON.stringify(json),(err) => { err && console.log(err); });
+    emitter.emit('write','follow');
   }
 });
 
@@ -31,13 +27,8 @@ router.post('/unfollow', function(req, res, next) {
   if(users.includes(user)){
     users.splice(users.indexOf(user),1);
     json.follow = users.join(",");
-    console.log(JSON.stringify(json));
-    fs.writeFile("./public/json/followingUsers.json", JSON.stringify(json),
-    function(err) {
-      if(err) {
-        return console.log(err);
-      }
-    });
+    fs.writeFile("./public/json/followingUsers.json", JSON.stringify(json), (err) => { err && console.log(err); });
   }
+  emitter.emit('write','unfollow');
 });
 module.exports = router;
