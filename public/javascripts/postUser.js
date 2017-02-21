@@ -1,7 +1,7 @@
 (function () {
   var follow = document.getElementById('follow');
   var unfollow = document.getElementById('unfollow');
-  var input = document.getElementById('burnitofield');
+  var input = document.getElementById('field');
 
   follow.addEventListener('click',function (){
     if (input.value.length === 0) {
