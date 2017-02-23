@@ -3,21 +3,33 @@ const Exec = require('child_process').exec;
 const burnito = require('./secret/burnito');
 const client = new Twitter(burnito);
 
-
-function parseJson(path){
-  return path
+function TwitterPrinter(json) {
+  this.stream = client.stream('statuses/filter', { follow: json["follow"], keepAlive: false});
 }
 
-function streamTweet(json){
-  const stream = client.stream('statuses/filter', { follow: json["follow"]});
-  stream.on('data', function(tweet) {
-  writeOnLp(tweet.user.name,tweet.text);
-});
+TwitterPrinter.prototype.streamTweet = function (){
 
-stream.on('error', function(error) {
-  throw error;
-});
-}
+  this.stream.on('data', function(tweet) {
+    writeOnLp(tweet.user.name,tweet.text);
+  });
+
+  function parseJson(path){
+    return path
+  }
+
+  this.stream.on('error', function(error) {
+    throw error;
+  });
+};
+
+TwitterPrinter.prototype.changeStreamParameter = function(json){
+  this.stream.destroy();
+  setTimeout(function() {
+  this.stream = client.stream('statuses/filter', { follow: json["follow"], keepAlive: false});
+}, 5000);
+  this.streamTweet();
+};
+
 
 function writeOnLp(tweetUser,tweetText){
   hyphen = "\n" + "-".repeat(34) + "\n"
@@ -32,4 +44,4 @@ function writeOnLp(tweetUser,tweetText){
   });
 }
 
-exports.streamTweet = streamTweet;
+module.exports = TwitterPrinter;

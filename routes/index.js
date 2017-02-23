@@ -1,4 +1,3 @@
-var emitter = require('../bin/emitter');
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
@@ -16,7 +15,6 @@ router.post('/follow', function(req, res, next) {
     users.splice(0,0,user);
     json.follow = users.join(",");
     fs.writeFile("./public/json/followingUsers.json", JSON.stringify(json),(err) => { err && console.log(err); });
-    emitter.emit('write','follow');
   }
 });
 
@@ -29,6 +27,5 @@ router.post('/unfollow', function(req, res, next) {
     json.follow = users.join(",");
     fs.writeFile("./public/json/followingUsers.json", JSON.stringify(json), (err) => { err && console.log(err); });
   }
-  emitter.emit('write','unfollow');
 });
 module.exports = router;
